@@ -11,18 +11,24 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as ArticuloImport } from './routes/articulo'
 import { Route as IndexImport } from './routes/index'
+import { Route as ArticuloIndexImport } from './routes/articulo/index'
+import { Route as ArticuloArticuloIDImport } from './routes/articulo/$articuloID'
 
 // Create/Update Routes
 
-const ArticuloRoute = ArticuloImport.update({
-  path: '/articulo',
+const IndexRoute = IndexImport.update({
+  path: '/',
   getParentRoute: () => rootRoute,
 } as any)
 
-const IndexRoute = IndexImport.update({
-  path: '/',
+const ArticuloIndexRoute = ArticuloIndexImport.update({
+  path: '/articulo/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ArticuloArticuloIDRoute = ArticuloArticuloIDImport.update({
+  path: '/articulo/$articuloID',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -37,11 +43,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
-    '/articulo': {
-      id: '/articulo'
+    '/articulo/$articuloID': {
+      id: '/articulo/$articuloID'
+      path: '/articulo/$articuloID'
+      fullPath: '/articulo/$articuloID'
+      preLoaderRoute: typeof ArticuloArticuloIDImport
+      parentRoute: typeof rootRoute
+    }
+    '/articulo/': {
+      id: '/articulo/'
       path: '/articulo'
       fullPath: '/articulo'
-      preLoaderRoute: typeof ArticuloImport
+      preLoaderRoute: typeof ArticuloIndexImport
       parentRoute: typeof rootRoute
     }
   }
@@ -49,6 +62,10 @@ declare module '@tanstack/react-router' {
 
 // Create and export the route tree
 
-export const routeTree = rootRoute.addChildren({ IndexRoute, ArticuloRoute })
+export const routeTree = rootRoute.addChildren({
+  IndexRoute,
+  ArticuloArticuloIDRoute,
+  ArticuloIndexRoute,
+})
 
 /* prettier-ignore-end */
