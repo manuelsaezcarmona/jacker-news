@@ -1,0 +1,16 @@
+## Para produccion
+build
+dist
+dist-ssr
+*.local
+##Librerias
+node_modules
+node_modules/*
+## Testing
+coverage
+## package
+ package-lock.json
+## Mac
+.DS_Store
+## IDE
+.vscode/*
