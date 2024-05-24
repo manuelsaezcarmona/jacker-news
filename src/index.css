@@ -13,6 +13,12 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+*,
+*:after,
+*:before {
+  box-sizing: border-box;
+}
+
 a {
   font-weight: 500;
   color: #646cff;
@@ -23,8 +29,24 @@ a:hover {
 }
 
 h1 {
-  font-size: 3.2em;
+  font-size: 2.2em;
   line-height: 1.1;
+  margin: 7px 10px;
+}
+
+h2,
+p {
+  margin: 0;
+}
+
+.Header {
+  display: flex;
+  flex-direction: column;
+  row-gap: 10px;
+}
+
+.Footer {
+  margin-top: 10px;
 }
 
 button {
@@ -44,6 +66,27 @@ button:hover {
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  row-gap: 10px;
+}
+
+.author,
+.puntuaciones,
+.comentarios {
+  display: flex;
+  justify-content: center;
+  margin: 0.1em 0px;
+}
+.author p,
+.puntuaciones p,
+.comentarios p {
+  min-width: 20%;
+  text-align: center;
+  background-color: antiquewhite;
 }
 
 @media (prefers-color-scheme: light) {
