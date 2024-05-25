@@ -9,7 +9,7 @@ Requisitos:
 
 - Instrucciones:
 
-  - [ ] Parte 1: Escribe una aplicación de React o React Native que obtenga y muestre las 10 principales historias de Hacker News usando la API de Hacker News - https://g ithub.com/HackerNews/ ✅
+  - [ ] Parte 1: Escribe una aplicación de React o React Native que obtenga y muestre las 10 principales historias de Hacker News usando la API de Hacker News - https://github.com/HackerNews/ ✅
         API
 
 - [ ] Parte 2: Si haces clic en una historia, deberías ver los comentarios en una página diferente. Obtén y muestra los primeros 10 comentarios y sus respuestas usando la API de Hacker News. Puedes usar cualquier biblioteca adicional que consideres necesaria. (recuerda respetar los comentarios anidados)

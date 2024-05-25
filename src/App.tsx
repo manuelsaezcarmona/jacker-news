@@ -1,16 +1,26 @@
+import { useEffect } from 'react';
 import './App.css';
 import { Articulo } from './components/Articulo';
 import { SkeletonArticulo } from './components/skeletons/SkeletonArticulo';
+import { TypeOfTop, getAllItems } from './services/api';
 
 function App() {
   // Si no tenemos los articulos , haremos una lista de skeleton , cuanto tengamos
-  // la data  remplazaremos por la lista de articulos.
+  // la data remplazaremos por la lista de articulos.
+
+  useEffect(() => {
+    async function paver() {
+      const algo = await getAllItems(TypeOfTop.best);
+      console.log(algo);
+    }
+    paver();
+  }, []);
 
   return (
     <main>
       <h1>JaaaCking News</h1>
-      <SkeletonArticulo />
-      <Articulo />
+      {/*   <SkeletonArticulo />
+      <Articulo /> */}
     </main>
   );
 }
