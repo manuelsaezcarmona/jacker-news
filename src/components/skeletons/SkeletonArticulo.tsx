@@ -8,7 +8,7 @@ const Resplandor = keyframes`
 `;
 
 /* NOTA: En styles Components con TS para evitar errores de atributos desconocidos 
-por react debemos nombrar las propiedad con el prefijo $ y usarlas de manera parecida
+por react debemos nombrar las propiedades con el prefijo $ y usarlas de manera parecida
 a PHP */
 
 interface ContenedorSkeletonProps {
@@ -28,8 +28,6 @@ const ContenedorSkeleton = styled.div<ContenedorSkeletonProps>`
   min-width: 50px;
   width: ${(props) => props.$Width ?? 100}%;
 `;
-
-// const alturaMinima = '20px';
 
 export function SkeletonArticulo() {
   return (

@@ -23,6 +23,7 @@
     "vite": "^5.1.4"
   },
   "devDependencies": {
+    "@tanstack/react-query-devtools": "^5.38.0",
     "@tanstack/router-vite-plugin": "^1.32.17",
     "@types/react": "^18.2.56",
     "@types/react-dom": "^18.2.19",
