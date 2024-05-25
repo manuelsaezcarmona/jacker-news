@@ -3,6 +3,9 @@ import { Articulo } from './components/Articulo';
 import { SkeletonArticulo } from './components/skeletons/SkeletonArticulo';
 
 function App() {
+  // Si no tenemos los articulos , haremos una lista de skeleton , cuanto tengamos
+  // la data  remplazaremos por la lista de articulos.
+
   return (
     <main>
       <h1>JaaaCking News</h1>
