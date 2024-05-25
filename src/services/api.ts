@@ -6,9 +6,9 @@ const version = `v0`;
 const resource = 'item';
 
 export enum TypeOfTop {
-  new = 'newstories.json',
-  top = 'topstories.json',
-  best = 'beststories.json',
+  New = 'newstories.json',
+  Top = 'topstories.json',
+  Best = 'beststories.json',
 }
 
 type Result<T> = { type: 'success'; value: T } | { type: 'error'; error: Error };

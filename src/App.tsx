@@ -1,30 +1,28 @@
 import { useEffect } from 'react';
 import './App.css';
+import { useQuery } from '@tanstack/react-query';
 import { Articulo } from './components/Articulo';
 import { SkeletonArticulo } from './components/skeletons/SkeletonArticulo';
-import { TypeOfTop, getAllItems } from './services/api';
+import { TypeOfTop, getAllItems, getTopIds } from './services/api';
 
 // eslint-disable-next-line import/extensions
 import { mockStories } from './services/mockStories';
 import { createPagination } from './utils';
 
 function App() {
-  // Si no tenemos los articulos , haremos una lista de skeleton , cuanto tengamos
-  // la data remplazaremos por la lista de articulos.
+  const query = useQuery({
+    queryKey: ['ids'],
+    // eslint-disable-next-line @typescript-eslint/return-await
+    queryFn: async () => await getTopIds(TypeOfTop.Best),
+  });
 
-  /*  useEffect(() => {
-    async function paver() {
-      const algo = await getAllItems(TypeOfTop.best);
-      console.log(algo);
-    }
-    paver();
-  }, []); */
-  console.log(createPagination(mockStories, 5));
+  console.log(query);
+
   return (
     <main>
       <h1>JaaaCking News</h1>
-      {/*   <SkeletonArticulo />
-      <Articulo /> */}
+      <SkeletonArticulo />
+      <Articulo />
     </main>
   );
 }
