@@ -19,3 +19,16 @@ export function paginate(array: [], pageSize: number, pageNumber: number): numbe
   // Usa el método slice para extraer los elementos de la página
   return array.slice(startIndex, startIndex + pageSize);
 }
+
+export function createPagination<T>(array: T[], pageSize: number): T[][] {
+  const paginacion = array.reduce<T[][]>((acumulador, actual, indice) => {
+    const grupo = Math.floor(indice / pageSize);
+    if (!acumulador[grupo]) {
+      // eslint-disable-next-line no-param-reassign
+      acumulador[grupo] = [];
+    }
+    acumulador[grupo].push(actual);
+    return acumulador;
+  }, []);
+  return paginacion;
+}
