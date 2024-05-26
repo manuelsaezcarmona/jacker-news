@@ -11,7 +11,7 @@ export enum TypeOfTop {
   Best = 'beststories.json',
 }
 
-type Result<T> = { type: 'success'; value: T } | { type: 'error'; error: Error };
+export type Result<T> = { type: 'success'; value: T } | { type: 'error'; error: Error };
 
 export const getTopIds = async (typeoftop: TypeOfTop): Promise<number[]> => {
   const response = await fetch(`${url}/${version}/${typeoftop}`);
@@ -30,9 +30,42 @@ export const getInfoItem = async (ID: number): Promise<Item> => {
   return info;
 };
 
+// Para Mañana. puedo realizar un fetch paginado que
+// le pase un array paginado (paginated Id : number[][] y un
+// indice de pagina que sera el pageParam que me pide TanStackQuery
 export const getDataItems = async (ids: number[]): Promise<Result<Item>[]> => {
   try {
     const itemsPromises = ids.map(async (id) => {
+      const response = await getInfoItem(id);
+
+      return response;
+    });
+
+    const resultsResponses = await Promise.allSettled(itemsPromises);
+
+    const dataItems: Result<Item>[] = resultsResponses.map((result) => {
+      if (result.status === 'fulfilled') {
+        return { type: 'success', value: result.value };
+      }
+      return { type: 'error', error: new Error('Sin datos') };
+    });
+
+    return dataItems;
+  } catch (error) {
+    return [{ type: 'error', error: new Error('Error al realizar la peticion de los datos') }];
+  }
+};
+
+// Para Mañana. puedo realizar un fetch paginado que
+// le pase un array paginado (paginated Id : number[][] y un
+// indice de pagina que sera el pageParam que me pide TanStackQuery
+export const getDataItemsWithPageParam = async (
+  paginationArray: number[][],
+  pageParam: number
+): Promise<Result<Item>[]> => {
+  try {
+    const pageParamArray = paginationArray[pageParam];
+    const itemsPromises = pageParamArray.map(async (id) => {
       const response = await getInfoItem(id);
 
       return response;

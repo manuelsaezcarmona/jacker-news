@@ -1,28 +1,14 @@
-import { useEffect } from 'react';
 import './App.css';
-import { useQuery } from '@tanstack/react-query';
-import { Articulo } from './components/Articulo';
-import { SkeletonArticulo } from './components/skeletons/SkeletonArticulo';
-import { TypeOfTop, getAllItems, getTopIds } from './services/api';
 
-// eslint-disable-next-line import/extensions
-import { mockStories } from './services/mockStories';
-import { createPagination } from './utils';
+import { TypeOfTop } from './services/api';
+
 import { ListArticulos } from './components/ListaArticulos';
 
 function App() {
-  const { isLoading, error, data } = useQuery({
-    queryKey: ['ids'],
-    // eslint-disable-next-line @typescript-eslint/return-await
-    queryFn: async () => await getTopIds(TypeOfTop.Best),
-  });
-  console.log(isLoading, error, data);
   return (
     <main>
       <h1>JaaaCking News</h1>
-      <ListArticulos typoDeTop={TypeOfTop.New} />
-      <SkeletonArticulo />
-      <Articulo />
+      <ListArticulos typoDeTop={TypeOfTop.New} pageSize={5} />
     </main>
   );
 }
