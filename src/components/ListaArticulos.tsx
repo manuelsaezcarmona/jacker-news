@@ -12,13 +12,27 @@ interface ListArticulosProp {
 
 export const UL = styled.ul`
   list-style: none;
+  display: flex;
+  flex-direction: column;
+  row-gap: 15px;
 `;
 
 export function ListArticulos({ typoDeTop, pageSize }: ListArticulosProp) {
-  const { isLoadingIDs, isLoadingPage, statusPage, statusIDs, itemsCurrentPage, dataPage } = useItems(
-    typoDeTop,
-    pageSize
-  );
+  const {
+    isLoadingIDs,
+    statusIDs,
+    isFetchedIDs,
+    isFetchingIDs,
+    isRefetchingIDs,
+    itemsCurrentPage,
+    isLoadingPage,
+    statusPage,
+    fetchNextPage,
+    isFetchingPage,
+    isFetchingNextPage,
+    isFetchedPage,
+    isRefetchingPage,
+  } = useItems(typoDeTop, pageSize);
 
   // Cuando este cargando los IDS debe aparecer un spiner
   // Cuando este cargando los articulos debe aparece el esqueleto
@@ -29,23 +43,47 @@ export function ListArticulos({ typoDeTop, pageSize }: ListArticulosProp) {
   // un estado local . (mejor en app) Habria que hacerlo de manera lazy. Que cargue primero
   // el chunk sincrono y luego otro asincrono.
 
-  return isLoadingIDs && isLoadingPage ? (
-    <UL>
-      {SkeletonList.map((index) => (
-        <li key={`skeArt-${index}`}>
-          <SkeletonArticulo />
-        </li>
-      ))}
-    </UL>
-  ) : (
-    <UL className="lista-articulos">
-      {itemsCurrentPage
-        .filter((result: Result<Item>): result is { type: 'success'; value: Item } => result.type === 'success')
-        .map(({ value }) => (
-          <li key={value.id}>
-            <Articulo article={value} />
-          </li>
-        ))}
-    </UL>
+  const handleClick = () => {
+    fetchNextPage();
+  };
+
+  console.log(
+    { isLoadingIDs },
+    { isLoadingPage },
+    { statusPage },
+    { statusIDs },
+    { isFetchingIDs },
+    { isFetchingNextPage },
+    { isRefetchingIDs },
+    { isRefetchingPage },
+    { isFetchedIDs },
+    { isFetchedPage }
+  );
+
+  return (
+    <>
+      {isLoadingPage ? (
+        <UL>
+          {SkeletonList.map((index) => (
+            <li key={`skeArt-${index}`}>
+              <SkeletonArticulo />
+            </li>
+          ))}
+        </UL>
+      ) : (
+        <UL className="lista-articulos">
+          {itemsCurrentPage
+            .filter((result: Result<Item>): result is { type: 'success'; value: Item } => result.type === 'success')
+            .map(({ value }) => (
+              <li key={value.id}>
+                <Articulo article={value} />
+              </li>
+            ))}
+        </UL>
+      )}
+      <button type="button" onClick={handleClick}>
+        Y aqui and
+      </button>
+    </>
   );
 }

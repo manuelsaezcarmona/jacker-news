@@ -1,5 +1,5 @@
 import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
-import { getDataItems, getTopIds, type TypeOfTop } from '../services/api';
+import { getDataItems, getDataItemsWithPageParam, getTopIds, type TypeOfTop } from '../services/api';
 import { createPagination } from '../utils';
 
 export const useItems = (typeTop: TypeOfTop, pageSize: number) => {
@@ -8,7 +8,15 @@ export const useItems = (typeTop: TypeOfTop, pageSize: number) => {
     queryFn: () => getTopIds(typeTop),
   });
 
-  const { data: itemIDs, isError: isErrorIDs, status: statusIDs, isLoading: isLoadingIDs } = queryIDs;
+  const {
+    data: itemIDs,
+    isError: isErrorIDs,
+    status: statusIDs,
+    isLoading: isLoadingIDs,
+    isFetching: isFetchingIDs,
+    isFetched: isFetchedIDs,
+    isRefetching: isRefetchingIDs,
+  } = queryIDs;
 
   const paginatedIds =
     !isErrorIDs && !isLoadingIDs && statusIDs === 'success' ? createPagination(itemIDs, pageSize) : [];
@@ -18,18 +26,27 @@ export const useItems = (typeTop: TypeOfTop, pageSize: number) => {
     queryFn: ({ pageParam }) => getDataItems(paginatedIds[pageParam]),
     initialPageParam: 0,
     enabled: !!itemIDs && itemIDs.length > 0,
-    getNextPageParam: (lastPage, allPages) => {
-      // Esta función debe retornar el parámetro para la próxima página.
-      // Dependiendo de la estructura de tu respuesta de 'getDataItems', esto puede variar.
-      // Por ejemplo, si tu API devuelve un campo indicando la próxima página:
-      return lastPage.length;
+    getNextPageParam: (lastPage, pages) => {
+      return lastPage.length > 0 ? pages.length : undefined;
     },
   });
 
-  const { data: dataPage, isError: isErrorPage, status: statusPage, isLoading: isLoadingPage } = queryDataItems;
+  const {
+    data: dataPage,
+    isError: isErrorPage,
+    status: statusPage,
+    isLoading: isLoadingPage,
+    fetchNextPage,
+    isFetching: isFetchingPage,
+    isFetchingNextPage,
+    isFetched: isFetchedPage,
+    isRefetching: isRefetchingPage,
+  } = queryDataItems;
 
   const itemsCurrentPage =
-    queryDataItems.status === 'success' && dataPage?.pages.length === 1 ? dataPage?.pages[0] : [];
+    queryDataItems.status === 'success' && dataPage?.pages?.length && dataPage?.pages?.length > 0
+      ? dataPage?.pages?.flat()
+      : [];
 
   return {
     itemIDs,
@@ -37,11 +54,19 @@ export const useItems = (typeTop: TypeOfTop, pageSize: number) => {
     statusIDs,
     isLoadingIDs,
     paginatedIds,
+    isFetchingIDs,
+    isFetchedIDs,
+    isRefetchingIDs,
     queryDataItems,
     itemsCurrentPage,
     dataPage,
     isErrorPage,
     statusPage,
     isLoadingPage,
+    fetchNextPage,
+    isFetchingPage,
+    isFetchingNextPage,
+    isFetchedPage,
+    isRefetchingPage,
   };
 };
