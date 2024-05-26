@@ -37,17 +37,18 @@ export function ListArticulos({ typoDeTop, pageSize }: ListArticulosProp) {
   // Cuando este cargando los IDS debe aparecer un spiner
   // Cuando este cargando los articulos debe aparece el esqueleto
 
-  const SkeletonList = Array.from({ length: pageSize }, () => <SkeletonArticulo />);
+  const SkeletonList = Array.from({ length: pageSize }, (_, index) => `sklt-${index}`);
 
   // Si quieres que apareza un loader mientras carga el estado asincrono hay que realizar
   // un estado local . (mejor en app) Habria que hacerlo de manera lazy. Que cargue primero
   // el chunk sincrono y luego otro asincrono.
 
   const handleClick = () => {
+    console.log(SkeletonList);
     fetchNextPage();
   };
 
-  console.log(
+  /*   console.log(
     { isLoadingIDs },
     { isLoadingPage },
     { statusPage },
@@ -57,16 +58,39 @@ export function ListArticulos({ typoDeTop, pageSize }: ListArticulosProp) {
     { isRefetchingIDs },
     { isRefetchingPage },
     { isFetchedIDs },
-    { isFetchedPage }
+    { isFetchedPage },
+    { isFetchingPage }
+  ); */
+
+  console.log(
+    { statusPage },
+    { statusIDs },
+    { isFetchingIDs },
+    { isRefetchingPage },
+    { isFetchedIDs },
+    { isFetchedPage },
+    { isFetchingPage }
   );
+
+  const isViewSkeletons = () => {
+    if (statusIDs === 'pending' && statusPage === 'pending') {
+      return true;
+    }
+    if (statusIDs === 'success' && statusPage === 'pending') {
+      return true;
+    }
+    return false;
+  };
+
+  const isSkeletonView = isViewSkeletons();
 
   return (
     <>
-      {isLoadingPage ? (
+      {isSkeletonView ? (
         <UL>
-          {SkeletonList.map((index) => (
-            <li key={`skeArt-${index}`}>
-              <SkeletonArticulo />
+          {SkeletonList.map((skeletoniD, index) => (
+            <li key={skeletoniD + index}>
+              <SkeletonArticulo key={skeletoniD} />
             </li>
           ))}
         </UL>
@@ -82,7 +106,7 @@ export function ListArticulos({ typoDeTop, pageSize }: ListArticulosProp) {
         </UL>
       )}
       <button type="button" onClick={handleClick}>
-        Y aqui and
+        Cargar mas
       </button>
     </>
   );
