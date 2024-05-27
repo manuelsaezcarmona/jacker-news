@@ -30,12 +30,11 @@ export const getInfoItem = async (ID: number): Promise<Item> => {
   return info;
 };
 
-// Para Mañana. puedo realizar un fetch paginado que
-// le pase un array paginado (paginated Id : number[][] y un
-// indice de pagina que sera el pageParam que me pide TanStackQuery
-export const getDataItems = async (ids: number[]): Promise<Result<Item>[]> => {
+export const getDataItems = async (ids: number[], limit?: number): Promise<Result<Item>[]> => {
   try {
-    const itemsPromises = ids.map(async (id) => {
+    const idsToSend = limit && limit > 0 ? ids.slice(0, limit) : [...ids];
+
+    const itemsPromises = idsToSend.map(async (id) => {
       const response = await getInfoItem(id);
 
       return response;

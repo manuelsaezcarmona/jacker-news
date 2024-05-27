@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { Link } from '@tanstack/react-router';
 import { formatTimestamp } from '../utils';
 import type { Item } from '../types';
 
@@ -19,12 +20,14 @@ interface ArticuloProps {
 }
 
 export function Articulo({ article }: ArticuloProps) {
-  const { time, title, score, url, by, kids } = article;
+  const { time, title, score, url, by, kids, id } = article;
 
   return (
     <ContenedorArticulo className="">
       <header className="Header">
-        <h2 className="">{title}</h2>
+        <Link to="/articulo/$articuloID" params={{ articuloID: `${id}` }} target="_blank" rel="noopener noreferrer">
+          <h2 className="">{title}</h2>
+        </Link>
         <div className="author">
           <p className="by">{by}</p>
           <p className="time">{typeof time === 'number' ? formatTimestamp(time) : 'sin fecha'}</p>
