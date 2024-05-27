@@ -1,5 +1,5 @@
 import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
-import { getDataItems, getDataItemsWithPageParam, getTopIds, type TypeOfTop } from '../services/api';
+import { getDataItems, getTopIds, type TypeOfTop } from '../services/api';
 import { createPagination } from '../utils';
 
 export const useItems = (typeTop: TypeOfTop, pageSize: number) => {

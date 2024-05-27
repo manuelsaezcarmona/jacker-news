@@ -20,6 +20,7 @@ interface ArticuloProps {
 
 export function Articulo({ article }: ArticuloProps) {
   const { time, title, score, url, by, kids } = article;
+
   return (
     <ContenedorArticulo className="">
       <header className="Header">
