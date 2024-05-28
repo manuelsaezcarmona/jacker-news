@@ -15,3 +15,7 @@ export interface Item {
   parts?: number[] | string[];
   descendants?: number;
 }
+
+export interface Comment extends Item {
+  children?: Item[];
+}
