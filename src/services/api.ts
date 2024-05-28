@@ -94,3 +94,39 @@ export const getAllItems = async (typeoftop: TypeOfTop): Promise<Item[]> => {
     .filter((item: Result<Item>): item is { type: 'success'; value: Item } => item.type === 'success')
     .map((result) => result.value); // Aquí TypeScript ya sabe que result es de tipo { type: 'success', value: Item }
 };
+
+export const getAllCommentsByID = async (commentID: number) => {
+  const allComents: any[] = [];
+
+  const processId = async (currentID: number) => {
+    const comment = await getInfoItem(currentID);
+    allComents.push(comment);
+    if (comment.kids && comment.kids.length > 0) {
+      const kidsData = getDataItems(comment.kids, 10);
+      return kidsData;
+    }
+    return null;
+  };
+  const result = await processId(commentID);
+  return allComents;
+};
+
+// Función principal para iniciar la recopilación de información
+export const gatherInformation = async (id: number) => {
+  const result: any[] = [];
+
+  // Función recursiva para procesar cada ID y sus 'kids' si existen
+  const processId = async (currentId: number) => {
+    const data = await getInfoItem(currentId); // Obtiene los datos del ID actual
+    result.push(data); // Almacena los datos obtenidos
+
+    // Si los datos tienen una propiedad 'kids' y contiene elementos, procesa cada ID en esa lista
+    if (data.kids && data.kids.length > 0) {
+      // Usar Promise.all para manejar todas las promesas de los 'kids' en paralelo
+      await Promise.all(data.kids.map((kidId) => processId(kidId)));
+    }
+  };
+
+  await processId(id); // Inicia el proceso con el ID inicial
+  return result; // Devuelve todos los datos recogidos
+};

@@ -8,7 +8,7 @@ function App() {
   return (
     <main>
       <h1>JaaaCking News</h1>
-      <ListArticulos typoDeTop={TypeOfTop.Best} pageSize={5} />
+      <ListArticulos typoDeTop={TypeOfTop.Top} pageSize={5} />
     </main>
   );
 }

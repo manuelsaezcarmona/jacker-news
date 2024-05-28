@@ -62,7 +62,7 @@ export function ListArticulos({ typoDeTop, pageSize }: ListArticulosProp) {
     { isFetchingPage }
   ); */
 
-  console.log(
+  /*   console.log(
     { statusPage },
     { statusIDs },
     { isFetchingIDs },
@@ -70,7 +70,7 @@ export function ListArticulos({ typoDeTop, pageSize }: ListArticulosProp) {
     { isFetchedIDs },
     { isFetchedPage },
     { isFetchingPage }
-  );
+  ); */
 
   const isViewSkeletons = () => {
     if (statusIDs === 'pending' && statusPage === 'pending') {
@@ -88,9 +88,9 @@ export function ListArticulos({ typoDeTop, pageSize }: ListArticulosProp) {
     <>
       {isSkeletonView ? (
         <UL>
-          {SkeletonList.map((skeletoniD, index) => (
-            <li key={skeletoniD + index}>
-              <SkeletonArticulo key={skeletoniD} />
+          {SkeletonList.map((skeletonID, index) => (
+            <li key={skeletonID + index}>
+              <SkeletonArticulo key={skeletonID} />
             </li>
           ))}
         </UL>
