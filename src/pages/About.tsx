@@ -1,5 +1,7 @@
 import { useEffect } from 'react';
-import { fetchComments, gatherInformation, getAllCommentsByID } from '../services/api';
+import { fetchComments } from '../services/api';
+import { SkeletonDetailHeader } from '../components/skeletons/SkeletonDetailHeader';
+import { SkeletonListaComentarios } from '../components/skeletons/SkeleletonListaComentarios';
 
 export function AboutPage() {
   useEffect(() => {
@@ -11,5 +13,11 @@ export function AboutPage() {
     prueba();
   }, []);
 
-  return <h1>About page</h1>;
+  return (
+    <main>
+      <h1>About page</h1>
+      <SkeletonDetailHeader />
+      <SkeletonListaComentarios />
+    </main>
+  );
 }

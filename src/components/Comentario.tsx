@@ -1,33 +1,37 @@
-import { useQuery } from '@tanstack/react-query';
-import { getInfoItem } from '../services/api';
-
-import { ListaComentarios } from './ListaComentarios';
+import type { Comment } from '../types';
+import { formatTimestamp } from '../utils';
 
 interface ComentarioProps {
-  comentarioID: number;
+  comentario: Comment;
 }
 
-export function Comentario({ comentarioID }: ComentarioProps) {
-  const { data, error, status } = useQuery({
-    queryKey: ['comentario'],
-    queryFn: () => getInfoItem(comentarioID),
-  });
+export function Comentario({ comentario }: ComentarioProps) {
+  // const subcomentarios = kids?.slice(0, 10) ?? [];
 
-  if (status === 'pending') return <p>cargando</p>;
-
-  const { kids, by, text, time } = data ?? {};
-
-  const subcomentarios = kids?.slice(0, 10) ?? [];
-
-  console.log(`subComentarios de ${comentarioID}`, subcomentarios);
+  const isParent: boolean = !!comentario.descendants;
+  const isChildren: boolean = !!comentario.parent;
+  const isDeleted: boolean = comentario.deleted === true;
+  const isLast: boolean = !comentario.kids;
 
   return (
-    <>
-      <details open>
-        <summary>Comentarios</summary>
-        <li>Componente Comentarios{text}</li>
-      </details>
-      {/* {subcomentarios.length > 0 && <ListaComentarios comentariosIDs={subcomentarios} />} */}
-    </>
+    <details className={`comment-details ${isParent && 'parent'}  ${isLast && 'last'}`} open={isParent}>
+      <summary className="comment-summary">
+        <span className="comment-author">{comentario.by}</span>
+        <span className="comment-date"> - {comentario.time && formatTimestamp(comentario.time)}</span>
+      </summary>
+
+      {isChildren && <p className="comment-text">{comentario?.text} </p>}
+      {isDeleted && <p className="comment-deleted">{comentario.deleted}</p>}
+
+      {comentario.children && (
+        <ul>
+          {comentario.children
+            .filter((child) => !child?.deleted)
+            .map((child) => (
+              <Comentario key={child.id} comentario={child} />
+            ))}
+        </ul>
+      )}
+    </details>
   );
 }

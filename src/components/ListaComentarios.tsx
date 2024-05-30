@@ -1,18 +1,28 @@
+import { useQuery } from '@tanstack/react-query';
+import { fetchComments } from '../services/api';
 import { Comentario } from './Comentario';
+import { SkeletonListaComentarios } from './skeletons/SkeleletonListaComentarios';
 
 interface ListaComentariosProps {
-  comentariosIDs: number[];
+  articuloID: number;
 }
 
-export function ListaComentarios({ comentariosIDs }: ListaComentariosProps) {
-  console.log('los comentarios en la lista de comentarios', comentariosIDs);
+export function ListaComentarios({ articuloID }: ListaComentariosProps) {
+  const {
+    data: commentsList,
+    status,
+    error,
+  } = useQuery({
+    queryKey: ['allComments', articuloID], // Asegúrate de usar una clave única por artículo
+    queryFn: () => fetchComments(articuloID),
+  });
+
+  if (status === 'pending') return <SkeletonListaComentarios />;
+  if (status === 'error') return <p>Error al cargar los comentarios: {error?.message}</p>;
+
   return (
-    <ul style={{ listStyle: 'none' }}>
-      {comentariosIDs.map((comentarioID) => (
-        <li key={comentarioID}>
-          <Comentario comentarioID={comentarioID} key={comentarioID} />
-        </li>
-      ))}
-    </ul>
+    <section className="comments-section">
+      {status === 'success' && <Comentario key={commentsList.id} comentario={commentsList} />}
+    </section>
   );
 }

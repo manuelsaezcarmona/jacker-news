@@ -17,5 +17,5 @@ export interface Item {
 }
 
 export interface Comment extends Item {
-  children?: Item[];
+  children?: Comment[];
 }

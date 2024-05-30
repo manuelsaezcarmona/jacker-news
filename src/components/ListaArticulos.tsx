@@ -1,3 +1,4 @@
+/* eslint-disable react/no-array-index-key */
 import styled from 'styled-components';
 import type { Result, TypeOfTop } from '../services/api';
 import { useItems } from '../hooks/useItems';
@@ -19,58 +20,19 @@ export const UL = styled.ul`
 
 export function ListArticulos({ typoDeTop, pageSize }: ListArticulosProp) {
   const {
-    isLoadingIDs,
     statusIDs,
-    isFetchedIDs,
-    isFetchingIDs,
-    isRefetchingIDs,
+
     itemsCurrentPage,
-    isLoadingPage,
+
     statusPage,
     fetchNextPage,
-    isFetchingPage,
-    isFetchingNextPage,
-    isFetchedPage,
-    isRefetchingPage,
   } = useItems(typoDeTop, pageSize);
-
-  // Cuando este cargando los IDS debe aparecer un spiner
-  // Cuando este cargando los articulos debe aparece el esqueleto
 
   const SkeletonList = Array.from({ length: pageSize }, (_, index) => `sklt-${index}`);
 
-  // Si quieres que apareza un loader mientras carga el estado asincrono hay que realizar
-  // un estado local . (mejor en app) Habria que hacerlo de manera lazy. Que cargue primero
-  // el chunk sincrono y luego otro asincrono.
-
   const handleClick = () => {
-    console.log(SkeletonList);
     fetchNextPage();
   };
-
-  /*   console.log(
-    { isLoadingIDs },
-    { isLoadingPage },
-    { statusPage },
-    { statusIDs },
-    { isFetchingIDs },
-    { isFetchingNextPage },
-    { isRefetchingIDs },
-    { isRefetchingPage },
-    { isFetchedIDs },
-    { isFetchedPage },
-    { isFetchingPage }
-  ); */
-
-  /*   console.log(
-    { statusPage },
-    { statusIDs },
-    { isFetchingIDs },
-    { isRefetchingPage },
-    { isFetchedIDs },
-    { isFetchedPage },
-    { isFetchingPage }
-  ); */
 
   const isViewSkeletons = () => {
     if (statusIDs === 'pending' && statusPage === 'pending') {
