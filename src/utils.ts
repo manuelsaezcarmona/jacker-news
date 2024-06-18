@@ -13,7 +13,7 @@ export function formatTimestamp(timestamp: number): string {
   return `${day2digist}/${month2digits}/${year}`;
 }
 
-export function paginate(array: [], pageSize: number, pageNumber: number): number[] {
+export function paginate<T>(array: T[], pageSize: number, pageNumber: number): T[] {
   // Calcula el índice de inicio de la página solicitada
   const startIndex = (pageNumber - 1) * pageSize;
   // Usa el método slice para extraer los elementos de la página

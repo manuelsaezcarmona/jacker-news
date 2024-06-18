@@ -42,6 +42,8 @@ Reutiliza tanto código como sea posible.
 
 ---
 
-# Contexto
+## Un poquito de Contexto
 
-Esta
+Este proyecto ha surgido para tener una version con tecnologias "mas modernas" para esta solucion.
+
+Para el routing usamos el file routing de TanSc
